@@ -19,15 +19,10 @@ public class CarController {
     private CarService carService;
 
     @GetMapping
-    public String showCars(
-            @RequestParam(value = "count", required = false) Integer count,
-            Model model
-    ) {
-
+    public String showCars(@RequestParam(defaultValue = "5") int count,
+                           Model model) {
         List<Car> cars = carService.getCars(count);
-
         model.addAttribute("cars", cars);
-
         return "cars";
     }
 }
