@@ -1,6 +1,8 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import web.dao.CarDao;
 import web.model.Car;
 
 import java.util.ArrayList;
@@ -9,22 +11,18 @@ import java.util.List;
 @Service
 public class CarService {
 
-    private final List<Car> carList;
+    private final CarDao carDao;
 
-    public CarService() {
-        carList = new ArrayList<>();
-        carList.add(new Car("BMW", "Black", 2015));
-        carList.add(new Car("Audi", "White", 2017));
-        carList.add(new Car("Toyota", "Silver", 2012));
-        carList.add(new Car("Honda", "Blue", 2019));
-        carList.add(new Car("Mercedes", "Red", 2020));
+    @Autowired
+    public CarService(CarDao carDao) {
+        this.carDao = carDao;
     }
 
-    public List<Car> getCars(Integer count) {
-        if (count == null || count >= 5) {
-            return carList;
+    public List<Car> getCars(int count) {
+        List<Car> allCars = carDao.getAllCars();
+        if (count >= allCars.size()) {
+            return allCars;
         }
-
-        return carList.subList(0, count);
+        return allCars.subList(0, count);
     }
 }
